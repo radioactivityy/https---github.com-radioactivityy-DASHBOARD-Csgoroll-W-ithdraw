@@ -1,0 +1,188 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>CSGORoll Withdraw Bot Dashboard</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" rel="stylesheet">
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" rel="stylesheet">
+    <link href="style.css" rel="stylesheet">
+</head>
+<body>
+    <div class="container-fluid">
+        <nav class="navbar navbar-dark mb-4">
+            <div class="container-fluid">
+                <span class="navbar-brand mb-0 h1">
+                    <i class="fas fa-robot me-2"></i>
+                    CSGORoll Withdraw Bot
+                </span>
+                <div class="d-flex align-items-center">
+                    <span class="badge bg-success me-2" id="status">Online</span>
+                    <span class="text-light" id="timestamp"></span>
+                </div>
+            </div>
+        </nav>
+        <div class="row">
+            <!-- Configuration Panel -->
+            <div class="col-md-4">
+                <div class="card bg-dark">
+                    <div class="card-header">
+                        <h5 class="mb-0"><i class="fas fa-cog me-2"></i>Configuration</h5>
+                    </div>
+                    <div class="alert alert-info mb-3" style="background: #161b22; color: #58a6ff; border: 1px solid #30363d;">
+                        <i class="fas fa-info-circle me-2"></i>
+                        Please fill in your session token, license password, and configure your trade settings below.
+                    </div>
+                    <div class="card-body">
+                        <!-- Session Token -->
+                        <div class="mb-3">
+                            <label class="form-label" for="sessionToken">🔑 Session Token</label>
+                            <div class="input-group">
+                                <input type="password" class="form-control bg-dark text-light border-secondary" 
+                                       id="sessionToken" placeholder="Enter session cookie">
+                                <button class="btn btn-outline-secondary" type="button" id="toggleToken">
+                                    <i class="fas fa-eye"></i>
+                                </button>
+                            </div>
+                            <div class="form-text text-light">Paste your session token to authenticate the bot.</div>
+                        </div>
+                        <!-- License Password -->
+                        <div class="mb-3">
+                            <label class="form-label" for="licensePassword">🛡️ License Password</label>
+                            <input type="password" class="form-control bg-dark text-light border-secondary"
+                                   id="licensePassword" placeholder="Enter license password">
+                            <div class="form-text text-light">Paste your subscription/license password.</div>
+                        </div>
+                        <!-- Min/Max Coins -->
+                        <div class="row mb-3">
+                            <div class="col-6">
+                                <label class="form-label" for="minCoins">Min Coins ($)</label>
+                                <input type="number" class="form-control bg-dark text-light border-secondary" 
+                                       id="minCoins" placeholder="0" min="0">
+                                <div class="form-text text-light">Set minimum trade value.</div>
+                            </div>
+                            <div class="col-6">
+                                <label class="form-label" for="maxCoins">Max Coins ($)</label>
+                                <input type="number" class="form-control bg-dark text-light border-secondary" 
+                                       id="maxCoins" placeholder="1000" min="0">
+                                <div class="form-text text-light">Set maximum trade value.</div>
+                            </div>
+                        </div>
+                        <!-- Markup Percentage -->
+                        <div class="mb-3">
+                            <label class="form-label" for="markupPercent">Markup Percentage (%)</label>
+                            <input type="number" class="form-control bg-dark text-light border-secondary" 
+                                   id="markupPercent" value="0" min="0" max="100">
+                            <div class="form-text text-light">Set maximum allowed markup for trades.</div>
+                        </div>
+                        <!-- AutoCaptcha -->
+                        <div class="mb-3">
+                            <div class="form-check">
+                                <input class="form-check-input" type="checkbox" id="autoCaptcha" checked>
+                                <label class="form-check-label" for="autoCaptcha">
+                                    🤖 Enable AutoCaptcha Solver
+                                </label>
+                            </div>
+                        </div>
+                        <!-- Control Buttons -->
+                        <div class="d-grid gap-2">
+                            <button class="btn btn-success" id="startBot">
+                                <i class="fas fa-play me-2"></i>Start Bot
+                            </button>
+                            <button class="btn btn-warning" id="pauseBot" disabled>
+                                <i class="fas fa-pause me-2"></i>Pause Bot
+                            </button>
+                            <button class="btn btn-danger" id="stopBot" disabled>
+                                <i class="fas fa-stop me-2"></i>Stop Bot
+                            </button>
+                        </div>
+                    </div>
+                </div>
+                <!-- Blacklist -->
+                
+            </div>
+            <!-- Statistics & Console -->
+            <div class="col-md-8">
+                <!-- Statistics -->
+                <div class="row mb-3">
+                    <div class="col-md-3">
+                        <div class="card bg-dark text-center">
+                            <div class="card-body">
+                                <i class="fas fa-shopping-cart fa-2x text-success mb-2"></i>
+                                <h5 id="totalTrades" class="text-success">0</h5>
+                                <small class="text-muted">Total Trades</small>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-md-3">
+                        <div class="card bg-dark text-center">
+                            <div class="card-body">
+                                <i class="fas fa-dollar-sign fa-2x text-warning mb-2"></i>
+                                <h5 id="totalValue" class="text-warning">$0</h5>
+                                <small class="text-muted">Total Value</small>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-md-3">
+                        <div class="card bg-dark text-center">
+                            <div class="card-body">
+                                <i class="fas fa-clock fa-2x text-info mb-2"></i>
+                                <h5 id="uptime" class="text-info">00:00:00</h5>
+                                <small class="text-muted">Uptime</small>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-md-3">
+                        <div class="card bg-dark text-center">
+                            <div class="card-body">
+                                <i class="fas fa-percentage fa-2x text-primary mb-2"></i>
+                                <h5 id="successRate" class="text-primary">0%</h5>
+                                <small class="text-muted">Success Rate</small>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <!-- Console Output -->
+                <div class="card bg-dark">
+                    <div class="card-header d-flex justify-content-between align-items-center">
+                        <h6 class="mb-0"><i class="fas fa-terminal me-2"></i>Console Output</h6>
+                        <button class="btn btn-sm btn-outline-secondary" id="clearConsole">
+                            <i class="fas fa-trash me-1"></i>Clear
+                        </button>
+                    </div>
+                    <div class="card-body p-0">
+                        <div id="console" class="console-output"></div>
+                    </div>
+                </div>
+                <div class="card bg-dark mt-3">
+                    <div class="card-header">
+                        <h6 class="mb-0"><i class="fas fa-ban me-2"></i>Item Blacklist</h6>
+                    </div>
+                    <div class="card-body">
+                        <div class="input-group mb-2">
+                            <input type="text" class="form-control bg-dark text-light border-secondary" 
+                                   id="blacklistItem" placeholder="Item name">
+                            <button class="btn btn-outline-danger" id="addBlacklist">
+                                <i class="fas fa-plus"></i>
+                            </button>
+                        </div>
+                        <div id="blacklistItems" class="mt-2">
+                            <span class="badge bg-danger me-1 mb-1">
+                                AK-47 | Safari Mesh
+                                <i class="fas fa-times ms-1 cursor-pointer" onclick="removeBlacklistItem(this)"></i>
+                            </span>
+                            <span class="badge bg-danger me-1 mb-1">
+                                AWP | Safari Mesh
+                                <i class="fas fa-times ms-1 cursor-pointer" onclick="removeBlacklistItem(this)"></i>
+                            </span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.bundle.min.js"></script>
+    <script src="script.js"></script>
+</body>
+</html>
